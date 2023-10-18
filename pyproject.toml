@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "py-vptree"
+version = "0.1.0"
+description = "A Python library to create VP trees"
+authors = ["Nyeki.py <hello@nyeki.dev>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "py_vptree"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
