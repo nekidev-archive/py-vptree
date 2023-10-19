@@ -30,7 +30,7 @@ class Node(object):
     """A node in the VPTree."""
 
     point: object
-    threshold: int
+    threshold: int = 0
     inside: "Node" = None
     outside: "Node" = None
 
@@ -77,7 +77,7 @@ class Node(object):
         )
 
     def __repr__(self) -> str:
-        return f"Node(point={self.point!r})"
+        return f"Node(point={self.point!r}, threshold={self.threshold!r})"
 
 
 class VPTree(object):
@@ -88,8 +88,9 @@ class VPTree(object):
     """
 
     vantage_point: typing.Union[Node, None] = None
+    threshold: int = 0
 
-    def __init__(self, initial: list, dist_fn: callable = hamming) -> None:
+    def __init__(self, initial: list = list(), dist_fn: callable = hamming) -> None:
         self.dist_fn = dist_fn
 
         if len(initial) == 0:
@@ -97,9 +98,6 @@ class VPTree(object):
 
         vp_choice = secrets.choice(initial)
         initial.remove(vp_choice)
-
-        distances = [self.dist_fn(vp_choice, d) for d in initial]
-        self.threshold = statistics.median(distances)
 
         # Update the system's recursion limit to the length of the initial list
         # so that the recursion limit is not exceeded.
@@ -111,7 +109,7 @@ class VPTree(object):
         # Restore the system's default recursion limit.
         sys.setrecursionlimit(recursion_limit)
 
-    def search(
+    def knn(
         self, query: object, k: typing.Union[int, float]
     ) -> typing.List[typing.Tuple[object, typing.Union[int, float]]]:
         """Returns the k nearest neighbors to `query`.
@@ -123,6 +121,9 @@ class VPTree(object):
         Returns:
             list[tuple[object, int | float]]: A list of the k nearest neighbors to `query`. Each neighbor is a tuple of `(point, distance)`
         """
+
+        if self.vantage_point is None:
+            return []
 
         tau = float("inf")
         to_search = [self.vantage_point]
@@ -151,7 +152,7 @@ class VPTree(object):
 
         return results
 
-    def radius(
+    def within(
         self, point: object, radius: typing.Union[int, float]
     ) -> typing.List[typing.Tuple[object, typing.Union[int, float]]]:
         """Returns all points within `radius` of `point`.
@@ -164,6 +165,9 @@ class VPTree(object):
             list[tuple[object, int | float]]: All points within `radius` of `point`.
         """
 
+        if self.vantage_point is None:
+            return []
+
         def search(node, point, tau, results):
             if node is None:
                 return
@@ -171,7 +175,7 @@ class VPTree(object):
             distance = self.dist_fn(point, node.point)
 
             if distance < tau:
-                results.append((node, distance))
+                results.append((node.point, distance))
 
             if distance < node.threshold + tau:
                 search(node.inside, point, tau, results)
@@ -197,29 +201,28 @@ class VPTree(object):
 
         self.vantage_point.insert(point, self.dist_fn)
 
-    def remove(self, point_to_remove: object) -> None:
+    def remove(self, point: object) -> None:
         """Remove a point from the tree.
 
         Args:
-            point_to_remove (object): The point to remove.
+            point (object): The point to remove.
         """
 
-        # Helper function to remove a point from a node and restructure the tree
-        def remove_from_node(node, point_to_remove):
+        def remove_from_node(node, point):
             if node is None:
                 return None, False
 
-            if node.point == point_to_remove:
+            if node.point == point:
                 if node.inside:
                     replacement_point, _ = node.inside.get_nearest_neighbor(node.point)
                     node.point = replacement_point
-                    node.inside.remove_point(point_to_remove)
+                    node.inside.remove_point(point)
                 else:
                     return None, True
-            elif point_to_remove <= node.threshold:
-                node.inside, _ = remove_from_node(node.inside, point_to_remove)
+            elif point <= node.threshold:
+                node.inside, _ = remove_from_node(node.inside, point)
             else:
-                node.outside, _ = remove_from_node(node.outside, point_to_remove)
+                node.outside, _ = remove_from_node(node.outside, point)
             
             if node.inside and node.outside:
                 node.threshold = max(node.inside.threshold, node.outside.threshold)
@@ -232,10 +235,10 @@ class VPTree(object):
 
             return node, False
 
-        self.vantage_point, _ = remove_from_node(self.vantage_point, point_to_remove)
+        self.vantage_point, _ = remove_from_node(self.vantage_point, point)
 
     def __len__(self) -> int:
         return len(self.vantage_point) + 1 if self.vantage_point is not None else 0
 
     def __repr__(self) -> str:
-        return f"VPTree(vantage_point={self.vantage_point!r}, threshold={self.threshold!r}, dist_fn={self.dist_fn!r})"
+        return f"VPTree(vantage_point={self.vantage_point!r}, dist_fn={self.dist_fn!r})"
