@@ -4,7 +4,7 @@ A library to create vantage point trees in Python.
 
 ## Installation
 
-This library has no dependencies, so you can just clone this repository or copy-paste the [__init__.py](./vptree/\_\_init\_\_.py) file into your project.
+This library has no dependencies, so you can just clone this repository or copy-paste the [\_\_init\_\_.py](./vptree/__init__.py) file into your project.
 
 ## Usage
 
