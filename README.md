@@ -83,48 +83,53 @@ Dislike `knn`, this method will not return points ordered by distance. If you wa
 
 The examples above use plain integers and a simple hamming distance function, but you can use the tree however you need it.
 
-An example with collections:
+<details>
+    <summary>Example using named tuples</summary>
 
-```py
-import random
-import collections
+    ```py
+    import random
+    import collections
 
-from vptree import VPTree
-
-
-Item = collections.namedtuple("Item", ["id", "value"])
-
-tree = VPTree(
-    points=[
-        Item(id=i, value=random.randint(0, 10000)) for i in range(10000)
-    ],
-    dist_fn=lambda x, y: bin(x[1] ^ y[1]).count("1"),
-)
-
-tree.knn((2, 2), 5)
-# [(Item(id=4885, value=8322), 2), (Item(id=3622, value=22), 2), (Item(id=8197, value=8195), 2), (Item(id=9380, value=4610), 2), (Item(id=984, value=7), 2)]
-```
-
-With euclidean distance:
-
-```py
-from math import sqrt
-
-import random
-import collections
-
-from vptree import VPTree
+    from vptree import VPTree
 
 
-Item = collections.namedtuple("Item", ["id", "value"])
+    Item = collections.namedtuple("Item", ["id", "value"])
 
-tree = VPTree(
-    points=[
-        Item(id=i, value=random.uniform(0, 10000)) for i in range(10000)
-    ],
-    dist_fn=lambda x, y: sqrt((x[1] - y[1]) ** 2),
-)
+    tree = VPTree(
+        points=[
+            Item(id=i, value=random.randint(0, 10000)) for i in range(10000)
+        ],
+        dist_fn=lambda x, y: bin(x[1] ^ y[1]).count("1"),
+    )
 
-tree.knn((2, 2), 5)
-# [(Item(id=7562, value=235.7541538751584), 233.7541538751584), (Item(id=5077, value=235.89421426943758), 233.89421426943758), (Item(id=5772, value=235.92818023762007), 233.92818023762007), (Item(id=6621, value=236.29613677601412), 234.29613677601412), (Item(id=6293, value=238.94108967773886), 236.94108967773886)]
-```
+    tree.knn((2, 2), 5)
+    # [(Item(id=4885, value=8322), 2), (Item(id=3622, value=22), 2), (Item(id=8197, value=8195), 2), (Item(id=9380, value=4610), 2), (Item(id=984, value=7), 2)]
+    ```
+</details>
+
+<details>
+    <summary>Example using euclidean distance</summary>
+
+    ```py
+    from math import sqrt
+
+    import random
+    import collections
+
+    from vptree import VPTree
+
+
+    Item = collections.namedtuple("Item", ["id", "value"])
+
+    tree = VPTree(
+        points=[
+            Item(id=i, value=random.uniform(0, 10000)) for i in range(10000)
+        ],
+        dist_fn=lambda x, y: sqrt((x[1] - y[1]) ** 2),
+    )
+
+    tree.knn((2, 2), 5)
+    # [(Item(id=7562, value=235.7541538751584), 233.7541538751584), (Item(id=5077, value=235.89421426943758), 233.89421426943758), (Item(id=5772, value=235.92818023762007), 233.92818023762007), (Item(id=6621, value=236.29613677601412), 234.29613677601412), (Item(id=6293, value=238.94108967773886), 236.94108967773886)]
+    ```
+
+</details>
