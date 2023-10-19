@@ -71,6 +71,13 @@ class Node(object):
             else:
                 self.outside.insert(point, dist_fn)
 
+    def all(self) -> typing.Iterator:
+        if self.inside is not None:
+            yield from self.inside.all()
+        if self.outside is not None:
+            yield from self.outside.all()
+        yield self.point
+
     def __len__(self) -> int:
         return (len(self.inside) + 1 if self.inside is not None else 0) + (
             len(self.outside) + 1 if self.outside is not None else 0
@@ -236,6 +243,13 @@ class VPTree(object):
             return node, False
 
         self.vantage_point, _ = remove_from_node(self.vantage_point, point)
+
+    def all(self) -> typing.Iterator:
+        if self.vantage_point is not None:
+            yield from self.vantage_point.all()
+        
+        return
+        yield
 
     def __len__(self) -> int:
         return len(self.vantage_point) + 1 if self.vantage_point is not None else 0

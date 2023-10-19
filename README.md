@@ -29,7 +29,18 @@ The `dist_fn` takes two points as arguments and returns a positive numeric dista
 hamming = lambda x, y: bin(x ^ y).count("1")
 ```
 
-## Insert a point to the tree
+### Get all points in the tree
+
+To get all points in the tree, you can use the `.all()` method:
+
+```py
+>>> sorted(list(tree.all()))
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]
+```
+
+The method returns a generator that yields all points in the tree (unordered).
+
+### Insert a point to the tree
 
 To insert a point to the tree, you can use the `insert` method:
 
@@ -37,7 +48,7 @@ To insert a point to the tree, you can use the `insert` method:
 >>> tree.insert(2)
 ```
 
-## Remove a point from the tree
+### Remove a point from the tree
 
 To remove a point from the tree, you can use the `remove` method:
 
@@ -47,7 +58,16 @@ To remove a point from the tree, you can use the `remove` method:
 
 This method won't rebuild the tree, but instead it'll promote another node to cover the space left by the removed point. No errors will be raised if the point is not in the tree.
 
-## Search for the k-nearest neighbors
+### Count the number of points in the tree
+
+To count the number of points in the tree, you can use the `len` built-in function:
+
+```py
+>>> len(tree)
+10000
+```
+
+### Search for the k-nearest neighbors
 
 To get the k-nearest neighbors, you can use the `knn` method:
 
@@ -59,7 +79,7 @@ To get the k-nearest neighbors, you can use the `knn` method:
 
 The result will be a list of tuples, where the first element is the point and the second element is the distance from the `query`.
 
-## Search within a radius
+### Search within a radius
 
 To search within a radius, you can use the `within` method:
 
@@ -79,7 +99,7 @@ Dislike `knn`, this method will not return points ordered by distance. If you wa
 [(2, 0), (66, 1), (3, 1), (6, 1), (18, 1), (34, 1), (10, 1), (0, 1)]
 ```
 
-## Custom points and distance function
+### Custom points and distance function
 
 The examples above use plain integers and a simple hamming distance function, but you can use the tree however you need it.
 
