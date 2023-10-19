@@ -10,7 +10,7 @@ You can install this library from PyPI:
 pip install py-vptree
 ```
 
-> [WARNING!]
+> [!WARNING]
 > This library has only been tested with Python 3.11. It may not work with other versions of Python.
 > Contributors are encouraged to test it with other versions of Python.
 
