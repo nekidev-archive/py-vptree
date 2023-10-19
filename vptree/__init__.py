@@ -90,21 +90,21 @@ class VPTree(object):
     vantage_point: typing.Union[Node, None] = None
     threshold: int = 0
 
-    def __init__(self, initial: list = list(), dist_fn: callable = hamming) -> None:
+    def __init__(self, points: list = list(), dist_fn: callable = hamming) -> None:
         self.dist_fn = dist_fn
 
-        if len(initial) == 0:
+        if len(points) == 0:
             return
 
-        vp_choice = secrets.choice(initial)
-        initial.remove(vp_choice)
+        vp_choice = secrets.choice(points)
+        points.remove(vp_choice)
 
         # Update the system's recursion limit to the length of the initial list
         # so that the recursion limit is not exceeded.
         recursion_limit = sys.getrecursionlimit()
-        sys.setrecursionlimit(len(initial))
+        sys.setrecursionlimit(len(points))
 
-        self.vantage_point = Node(vp_choice, dist_fn, initial)
+        self.vantage_point = Node(vp_choice, dist_fn, points)
 
         # Restore the system's default recursion limit.
         sys.setrecursionlimit(recursion_limit)
