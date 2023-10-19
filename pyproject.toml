@@ -5,7 +5,7 @@ description = "A Python library to create vantage point trees (VP-trees)"
 authors = ["Nyeki.py <hello@nyeki.dev>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "py_vptree"}]
+packages = [{include = "vptree"}]
 
 [tool.poetry.dependencies]
 python = "^3.6"
