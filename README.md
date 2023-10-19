@@ -1,6 +1,6 @@
 # py-vptree
 
-[![Upload Python Package](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml/badge.svg)](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml) [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G6I3GT1)
+[![Upload Python Package](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml/badge.svg)](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml)
 
 A library to create vantage point trees in Python.
 
