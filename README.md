@@ -1,7 +1,5 @@
 # py-vptree
 
-[![Upload Python Package](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml/badge.svg)](https://github.com/Nekidev/py-vptree/actions/workflows/python-publish.yml)
-
 A library to create vantage point trees in Python.
 
 ## Installation
